@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package user;
+
+message Void {}
+
+service UserService {
+  rpc GetAll (Void) returns (UserGetAllRes);
+  rpc FindById (UserIdReq) returns (User);
+  rpc Create (UserCreateReq) returns (UserCreateRes);
+  rpc Delete (UserIdReq) returns (Void);
+}
+
+message User {
+  uint32 id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  string group = 5;
+}
+
+message UserIdReq {
+  uint32 id = 1;
+}
+
+message UserGetAllRes {
+  repeated User users = 1;
+}
+
+message UserCreateReq {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  string group = 4;
+}
+
+message UserCreateRes {
+  uint32 id = 1;
+  string name = 2;
+  string email = 3;
+  string group = 5;
+}
