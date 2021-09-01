@@ -9,6 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 import {
   User,
   UserCreateReq,
@@ -30,21 +31,23 @@ export class AppController implements OnModuleInit {
 
   @Get()
   getAll(): Promise<UserGetAllRes> {
-    return this.userGrpcService.getAll({});
+    return lastValueFrom(this.userGrpcService.getAll({}));
   }
 
   @Get('/:id')
   findById(@Param('id') id: number): Promise<User> {
-    return this.userGrpcService.findById({ id });
+    return lastValueFrom(this.userGrpcService.findById({ id }));
   }
 
   @Post()
   create(@Body() data: UserCreateReq): Promise<UserCreateRes> {
-    return this.userGrpcService.create(data);
+    return lastValueFrom(this.userGrpcService.create(data));
   }
 
   @Delete('/:id')
-  delete(@Param('id') id: number) {
-    return this.userGrpcService.delete({ id });
+  async delete(@Param('id') id: number) {
+    const user = await lastValueFrom(this.userGrpcService.findById({ id }));
+
+    return this.userGrpcService.delete({ id: user.id });
   }
 }

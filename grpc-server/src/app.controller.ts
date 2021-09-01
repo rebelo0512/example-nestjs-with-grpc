@@ -27,12 +27,9 @@ export class AppController implements OnModuleInit {
 
   @GrpcMethod(UserServiceEnum.ServiceName, UserServiceEnum.FindById)
   async findById({ id: user_id }: UserIdReq): Promise<User> {
-    const users_filtered = users.filter(({ id }) => id == user_id);
+    const user = users.find(({ id }) => id == user_id);
 
-    if (users_filtered.length == 0)
-      throw new RpcException('Usuário Não encontrado');
-
-    const user = users_filtered[0];
+    if (!user) throw new RpcException('Usuário Não encontrado');
 
     return user;
   }

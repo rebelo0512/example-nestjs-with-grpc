@@ -1,8 +1,10 @@
+import { Observable } from 'rxjs';
+
 export interface UserService {
-  getAll(fields: any): Promise<UserGetAllRes>;
-  findById(fields: UserIdReq): Promise<User>;
-  create(fields: UserCreateReq): Promise<UserCreateRes>;
-  delete(fields: UserIdReq): Promise<void>;
+  getAll(fields: any): Observable<UserGetAllRes>;
+  findById(fields: UserIdReq): Observable<User>;
+  create(fields: UserCreateReq): Observable<UserCreateRes>;
+  delete(fields: UserIdReq): Observable<void>;
 }
 
 export enum UserServiceEnum {
